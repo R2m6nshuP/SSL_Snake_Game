@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<head>
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="canvas" height="600" width="600" style="border:1px solid black;"></canvas>
+  <script>
+    // creating variable to access canvas
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+// creating grid variables
+let gridSize = 20;
+let tileCount = canvas.width / gridSize;
+
+// creating snake
+let snake = [
+  { x: 10, y: 10 },
+  { x: 9, y: 10 },
+  { x: 8, y: 10 }
+];
+
+// initial direction
+let dx = 1;
+let dy = 0;
+let currentDir = "R"; // direction of snake
+
+let gameOver = false; // as name suggests
+let score = 0;
+
+let a = Math.floor(Math.random() * tileCount);
+let b = Math.floor(Math.random() * tileCount);
+let food = { x: a, y: b };
+
+// check if food generated inside snake
+function foodInSnake() {
+  for (let i = 0; i < snake.length; i++) {
+    if (snake[i].x === food.x && snake[i].y === food.y) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function gameLoop() {
+  // new snake head after movement
+  let head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+  // checking gameover conditions
+  if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+    gameOver = true;
+  }
+
+  for (let i = 1; i < snake.length; i++) {
+    if (head.x === snake[i].x && head.y === snake[i].y) {
+      gameOver = true;
+    }
+  }
+
+  if (gameOver) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "black";
+    ctx.font = "30px Arial";
+    ctx.fillText("Game Over", 150, 200);
+    ctx.fillText("Score: " + score, 150, 250);
+    setTimeout(gameLoop, 100);
+    return;
+  }
+
+  // updating head
+  snake.unshift(head);
+
+  // deleting tail if food not eaten, and adding new food if eaten
+  if (head.x === food.x && head.y === food.y) {
+    score++;
+    while (foodInSnake()) {
+      food.x = Math.floor(Math.random() * tileCount);
+      food.y = Math.floor(Math.random() * tileCount);
+    }
+  } else {
+    snake.pop();
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // creating food
+  ctx.fillStyle = "red";
+  ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
+
+  // creating snake on grid
+  ctx.fillStyle = "black";
+  snake.forEach(part => {
+    ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize, gridSize);
+  });
+
+  setTimeout(gameLoop, 100);
+}
+
+gameLoop();
+
+// controlling direction
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp" && currentDir != "D") {
+    dx = 0;
+    dy = -1;
+    currentDir = "U";
+  }
+  if (e.key === "ArrowDown" && currentDir != "U") {
+    dx = 0;
+    dy = 1;
+    currentDir = "D";
+  }
+  if (e.key === "ArrowRight" && currentDir != "L") {
+    dx = 1;
+    dy = 0;
+    currentDir = "R";
+  }
+  if (e.key === "ArrowLeft" && currentDir != "R") {
+    dx = -1;
+    dy = 0;
+    currentDir = "L";
+  }
+});
+
+  </script>
+</body>
+</html>
