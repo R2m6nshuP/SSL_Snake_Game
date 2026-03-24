@@ -1,0 +1,54 @@
+Features
+
+Core Gameplay
+Movement using Arrow Keys / WASD
+Smooth snake movement with grid-based logic
+Pause / Resume / Restart functionality
+Dynamic difficulty levels (Easy / Medium / Hard)
+Adjustable canvas size
+---------------------------------------------------
+Food System
+
+Carrot → +1 length
+Pumpkin Pie → +3 length
+Golden Apple → Temporary immunity
+---------------------------------------------------
+Game Modes
+
+Wrap Mode (snake reappears on opposite side)
+Obstacle Mode (walls/blocks added)
+Classic mode available
+---------------------------------------------------
+UI / UX
+
+Changeable background themes
+Score display:
+Current score
+Highest score (session-based)
+Start & Game Over modals
+Eating animation + tongue animation
+---------------------------------------------------
+Sound effects:
+
+Eat
+Game Over
+Movement  
+---------------------------------------------------
+Leaderboard
+
+Persistent score storage via backend
+Tracks:
+Username
+Score
+Cause of death
+Duration
+---------------------------------------------------
+
+Authors
+Om Chavan
+Ramanshu Padole
+---------------------------------------------------
+
+Future Improvements
+Multiplayer mode
+---------------------------------------------------
