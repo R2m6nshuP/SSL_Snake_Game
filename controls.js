@@ -19,7 +19,7 @@ document.addEventListener("keydown", (e) => {
     }
 
     //restarting game
-    else if(gameState === "gameOver" && e.key === "r"){
+    else if(gameState === "gameOver" && e.key === "Enter"){
         resetGame();
         gameState="playing";
     }

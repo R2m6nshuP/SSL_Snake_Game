@@ -1,13 +1,14 @@
+ 
 //making grid
 function displayBoard(){
     for( let i=0; i<rows; i++){
         for(let j=0; j<cols; j++){
             if((i+j)%2 === 0){
-                ctx.fillStyle = "#aad751";
+                ctx.fillStyle = "#A7D948";
                 ctx.fillRect(Xoffset + j*gridSize, Yoffset + i*gridSize, gridSize, gridSize);
             }
             else{
-                ctx.fillStyle = "#a2d149";
+                ctx.fillStyle = "#8FCB3E";
                 ctx.fillRect(Xoffset + j*gridSize, Yoffset + i*gridSize, gridSize, gridSize);
             }
         }
@@ -19,14 +20,14 @@ function displayFood(food){
     let centerX = Xoffset + food.x * gridSize + gridSize/2;
     let centerY = Yoffset + food.y * gridSize + gridSize/2;
 
-    let pulse = Math.sin(time * 0.005) * 0.1; // smooth animation
+    let pulse = Math.sin(time * 0.004) * 0.1; // smooth animation
     let radius = gridSize * (0.4 + pulse);
 
     ctx.save();
     
-    ctx.shadowBlur=20;
+    ctx.shadowBlur=0;
 
-    // Apple body
+   // Apple body
     ctx.shadowColor="red";
     ctx.fillStyle = "red";
     ctx.beginPath();
@@ -44,16 +45,98 @@ function displayFood(food){
     ctx.beginPath();
     ctx.ellipse(centerX + 5, centerY - radius - 5, 6, 3, Math.PI/4, 0, Math.PI*2);
     ctx.fill();
-
+ 
+ 
     ctx.restore();
 }
 
 //showing score
 function displayScore(score){
+    // Set fixed coordinates 
+    let centerX = 40; 
+    let centerY = 28;  
+    let radius = 15;
+
+    ctx.save();  
+
+    
+
+    // Apple body
+    ctx.shadowColor = "red";
+    ctx.fillStyle = "red";
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Stem
+    ctx.shadowColor = "brown";
+    ctx.fillStyle = "brown";
+    ctx.fillRect(centerX - 2, centerY - radius - 5, 4, 8);
+
+    // Leaf
+    ctx.shadowColor = "green";
     ctx.fillStyle = "green";
+    ctx.beginPath();
+    ctx.ellipse(centerX + 5, centerY - radius - 5, 6, 3, Math.PI/4, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();  
+
+    ctx.fillStyle = "#A7D948";  
     ctx.font = "bold 40px Arial";
     ctx.textAlign = "left";
-    ctx.fillText("Score: " + score, 80, 40);
+    ctx.fillText(score, 75, 40); 
+
+    let trophyX = 150;
+    let trophyY = 28;
+
+    ctx.save(); 
+    let goldColor = "#FFD700"; 
+    let darkGoldColor = "#DAA520"; 
+
+    
+    ctx.shadowColor = goldColor;
+    ctx.fillStyle = goldColor;
+
+    // Trophy Cup 
+    ctx.beginPath();
+    ctx.arc(trophyX, trophyY - radius * 0.3, radius, 0, Math.PI, false); 
+    ctx.lineTo(trophyX + radius, trophyY - radius * 0.8); 
+    ctx.lineTo(trophyX - radius, trophyY - radius * 0.8); 
+    ctx.closePath();
+    ctx.fill();
+
+    // Trophy Stem 
+    ctx.fillRect(trophyX - (radius * 0.2), trophyY, radius * 0.4, radius * 0.8);
+
+    // Trophy Base 
+    ctx.shadowColor = "rgba(0,0,0,0.5)"; 
+    ctx.fillRect(trophyX - radius, trophyY + radius * 0.6, radius * 2, radius * 0.4);
+
+    // Trophy Handles 
+    ctx.restore(); 
+    ctx.save(); 
+    ctx.strokeStyle = darkGoldColor;
+    ctx.lineWidth = radius * 0.2; 
+    ctx.lineCap = "round";
+
+    // Left Handle
+    ctx.beginPath();
+    ctx.arc(trophyX - radius * 0.8, trophyY - radius * 0.3, radius * 0.6, Math.PI * 0.5, Math.PI * 1.5);
+    ctx.stroke();
+
+    // Right Handle
+    ctx.beginPath();
+    ctx.arc(trophyX + radius * 0.8, trophyY - radius * 0.3, radius * 0.6, Math.PI * 1.5, Math.PI * 0.5);
+    ctx.stroke();
+
+    ctx.restore(); 
+
+     
+    ctx.fillStyle = "#8FCB3E"; 
+    ctx.font = "bold 40px Arial";
+    ctx.textAlign = "left";
+    
+    ctx.fillText(highscore, trophyX + 35, 40);
 }
 
 //display Snake
