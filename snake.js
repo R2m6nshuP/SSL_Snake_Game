@@ -127,4 +127,5 @@ function resetGame(){
     accumulator=0;
     generateFood(food);
     scoreSaved=false;
+    scoreSent=false;
 }

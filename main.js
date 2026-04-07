@@ -1,4 +1,5 @@
 startScreen();
+scoreSent = false;
 requestAnimationFrame(gameLoop);
 function gameLoop(timestamp){
     let deltaTime = timestamp - lastTime;
@@ -27,8 +28,24 @@ function gameLoop(timestamp){
     else if(gameState === "gameOver"){
         displayGame();
         gameOverScreen();
+        if(!scoreSent){
+            fetch("http://127.0.0.1:5000/save-score", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: "Player",
+                    score: score
+                })
+            })
+            .then(res => res.json())
+            .then(data => console.log(data));
+
+            scoreSent = true;
+        }
     }
 
-    // Continue loop
+    // Continue loop  
     requestAnimationFrame(gameLoop);
 }
