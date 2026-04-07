@@ -63,8 +63,9 @@ let currentbg = bg[0];
 //for speed
 let speed = [
     {name: "SLOW", val: 200},
-    {name: "MEDIUM", val: 100},
-    {name: "FAST", val: 50}
+    {name: "MEDIUM", val: 130},
+    {name: "FAST", val: 50},
+    {name: "HELLMODE", val: 100}
 ];
 let speedIndex = 0;
 

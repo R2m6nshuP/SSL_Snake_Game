@@ -1,0 +1,4 @@
+[2026-04-07 23:32:59] Player | 0 | HELLMODE | wall | 1
+[2026-04-07 23:33:32] Player | 13 | HELLMODE | wall | 23
+[2026-04-07 23:34:37] Player | 1 | HELLMODE | wall | 3
+[2026-04-07 23:38:06] Player | 4 | SLOW | wall | 10
