@@ -122,8 +122,7 @@ function resetGame(){
     Dir = ["R"];
     score = 0;
     moveDelay=100;
-    lastTime=0;
-    time=0;
+    
     accumulator=0;
     generateFood(food);
     scoreSaved=false;

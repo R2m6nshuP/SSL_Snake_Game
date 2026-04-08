@@ -64,13 +64,7 @@ function buttonClick(Button, x, y){
         y <= Button.y + Button.h
     )
 }
-function menuClick(x, y){
-    let playButton = getButton(Xoffset + gameSize/2 - 4*gridSize, Yoffset + gameSize/2 - gridSize, 8*gridSize, 2*gridSize);
-    if(buttonClick(playButton, x, y)){
-        resetGame();
-        gameState = "playing";
-    }
-}
+ 
 
 function gameOverClick(x, y){
     let restartButton = getButton(Xoffset + gameSize/2 - 100, Yoffset + gameSize/2 + 50, 200, 60);

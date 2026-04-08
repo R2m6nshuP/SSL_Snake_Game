@@ -1,17 +1,5 @@
 //setup before game start
-function startScreen(){
-displayBoard();
-//play button
-let playButton = getButton(Xoffset + gameSize/2 - 4*gridSize, Yoffset + gameSize/2 - gridSize, 8*gridSize, 2*gridSize);
-let isHover = buttonClick(playButton, mouseX, mouseY);
-ctx.fillStyle= isHover ? "#0000cc" : "blue";
-ctx.fillRect(playButton.x, playButton.y, playButton.w, playButton.h);
-ctx.fillStyle= "white";
-ctx.textAlign= "center";
-ctx.font = isHover ? "bold 32px Arial" : "30px Arial";
-ctx.fillText("PLAY", playButton.x + playButton.w / 2, playButton.y + 2*playButton.h / 3 );
-}
-
+ 
 //setup at pause
 function pauseScreen(){
     ctx.fillStyle = "rgba(255, 255, 255, 0.30)";
