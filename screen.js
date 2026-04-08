@@ -1,9 +1,32 @@
 //setup before game start
- 
+function startScreen(){
+    displayBoard();
+    //all buttons
+    menuButtons.forEach(btn => {
+    btn.draw(ctx, mouseX, mouseY);
+});
+}
+
+function settingsScreen(){
+    displayBoard();
+
+    ctx.fillStyle = "black";
+    ctx.font = "40px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("SETTINGS", canvas.width/2, 100);
+    settingsButtons[0].text = "SNAKE: " + colors[colorIndex].name;
+    settingsButtons[1].text = "THEME: " + currentbg.name;
+    settingsButtons[2].text = "SPEED: " + speed[speedIndex].name;
+
+    settingsButtons.forEach(btn => {
+        btn.draw(ctx, mouseX, mouseY);
+    });
+}
+
 //setup at pause
 function pauseScreen(){
     ctx.fillStyle = "rgba(255, 255, 255, 0.30)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(Xoffset, Yoffset, cols*gridSize, rows*gridSize);
     ctx.fillStyle = "rgba(0, 0, 0, 1)";
     ctx.textAlign = "center";
     ctx.fillText("Press P again to resume", canvas.width/2, canvas.height/2);
@@ -25,14 +48,8 @@ function gameOverScreen(){
     }
     ctx.fillText("High Score: " + highscore, canvas.width/2, canvas.height/2);
     
-    //restart button
-    let restartButton = getButton(Xoffset + gameSize/2 - 100, Yoffset + gameSize/2 + 50, 200, 60);
-    let isHover = buttonClick(restartButton, mouseX, mouseY);
-    ctx.fillStyle= isHover ? "#0000cc" : "blue";
-    ctx.fillRect(restartButton.x, restartButton.y, restartButton.w, restartButton.h);
-    ctx.fillStyle= "white";
-    ctx.textAlign= "center";
-    ctx.font = isHover ? "bold 32px Arial" : "30px Arial";
-    ctx.fillText("RESTART", restartButton.x + restartButton.w / 2, restartButton.y + 2*restartButton.h / 3 );
+    gameOverButtons.forEach(btn => {
+    btn.draw(ctx, mouseX, mouseY);
+});
 }
 

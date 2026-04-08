@@ -45,10 +45,12 @@ function getNewHead() {
 //checking gameover conditions
 function isGameOver(head){
     if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
+        causeOfDeath = "wall"
         return true;
     }
     for (let i = 1; i < snake.length; i++) {
         if (head.x === snake[i].x && head.y === snake[i].y) {
+            causeOfDeath = "self"
             return true;
         }
     }
@@ -62,8 +64,8 @@ function updateSnake(head){
     //deleting tail if food not eaten, and adding new food if eaten
     if(head.x === food.x && head.y === food.y){
         score++;
-        if(moveDelay>50){
-            moveDelay*=0.98;
+        if(speed[speedIndex].name == "HELLMODE" && moveDelay<35){
+            moveDelay*=0.99;
         }
         generateFood(food);
     }
@@ -121,9 +123,12 @@ function resetGame(){
     currentDir = "R";
     Dir = ["R"];
     score = 0;
-    moveDelay=100;
-    
+    moveDelay=speed[speedIndex].val;
+    lastTime=0;
+    time=0;
     accumulator=0;
     generateFood(food);
     scoreSaved=false;
+    scoreSent=false;
+    startTime=Date.now()
 }

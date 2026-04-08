@@ -19,9 +19,14 @@ document.addEventListener("keydown", (e) => {
     }
 
     //restarting game
-    else if(gameState === "gameOver" && e.key === "Enter"){
+    else if(gameState === "gameOver" && e.key === "r"){
         resetGame();
         gameState="playing";
+    }
+
+    //settings
+    else if(gameState === "settings" && e.key === "Escape"){
+        gameState="menu";
     }
 
     //pausing the game
@@ -37,42 +42,25 @@ canvas.addEventListener("click", (e) => {
     const rect = canvas.getBoundingClientRect();
 
     // Mouse position inside canvas
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    let mx = e.clientX - rect.left;
+    let my = e.clientY - rect.top;
 
-    Click(mouseX, mouseY);
+    if(gameState === "menu"){
+        menuButtons.forEach(btn => btn.afterClick(mx, my));
+    }
+    else if(gameState === "settings"){
+        settingsButtons.forEach(btn => btn.afterClick(mx, my));
+    }
+    else if(gameState === "gameOver"){
+        gameOverButtons.forEach(btn => btn.afterClick(mx, my));
+    }
+    else if(gameState === "playing"){
+        pauseButton.afterClick(mx, my);
+    }
+    else if(gameState === "paused"){
+        resumeButton.afterClick(mx, my);
+    }
 });
-
-function Click(x, y){
-    if(gameState==="menu") menuClick(x, y);
-    else if(gameState==="gameOver") gameOverClick(x, y);
-}
-
-function getButton(x, y, w, h){
-    return{
-        x: x,
-        y: y,
-        w: w,
-        h: h
-    }
-}
-function buttonClick(Button, x, y){
-    return (
-        x >= Button.x &&
-        x <= Button.x + Button.w &&
-        y >= Button.y &&
-        y <= Button.y + Button.h
-    )
-}
- 
-
-function gameOverClick(x, y){
-    let restartButton = getButton(Xoffset + gameSize/2 - 100, Yoffset + gameSize/2 + 50, 200, 60);
-    if(buttonClick(restartButton, x, y)){
-        resetGame();
-        gameState = "playing";
-    }
-}
 
 let mouseX = 0;
 let mouseY = 0;
