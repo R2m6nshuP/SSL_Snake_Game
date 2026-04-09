@@ -1,9 +1,13 @@
-startScreen();
-scoreSent = false;
+// let gameState = "menu";
+ // let lastTime = 0;
+// let time = 0;
+ // let accumulator = 0;
+let scoreSent = false;
 let startTime;
 let causeOfDeath;
 requestAnimationFrame(gameLoop);
 function gameLoop(timestamp){
+    if (lastTime === 0) lastTime = timestamp;
     let deltaTime = timestamp - lastTime;
     lastTime = timestamp;
     time +=deltaTime;

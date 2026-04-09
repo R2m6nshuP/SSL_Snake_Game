@@ -2,7 +2,8 @@ let dx=1;
 let dy=0;
 let currentDir = "R";
 let Dir=["R"] //direction of snake
-
+let pendingGrowth = 0;
+ // let prevSnake =[];
 //creating snake
 let snake = [
   {x:10,y:10},
@@ -15,7 +16,21 @@ let food = {
     y:0
 }
 generateFood(food);
-
+let goldenApple={
+    x:0,
+    y:0,
+    active:false,
+    timer:0
+};
+function generategoldenApple(){
+    if(goldenApple.active) return;
+    do{
+        goldenApple.x=Math.floor(Math.random()*cols);
+        goldenApple.y=Math.floor(Math.random()*rows);
+    } while( foodInSnake(goldenApple) || (goldenApple.x===food.x && goldenApple.y === food.y) );
+    goldenApple.active = true;
+    goldenApple.timer = (Math.floor(Math.random()*5000) + 5000)
+}
 //function to check if food generated inside snake
 function foodInSnake(food){
     for (let i = 0; i < snake.length; i++) {
@@ -64,10 +79,21 @@ function updateSnake(head){
     //deleting tail if food not eaten, and adding new food if eaten
     if(head.x === food.x && head.y === food.y){
         score++;
+        pendingGrowth++;
         if(speed[speedIndex].name == "HELLMODE" && moveDelay<35){
             moveDelay*=0.99;
         }
         generateFood(food);
+        if(Math.random() < 0.20) generategoldenApple();
+    }
+    if( goldenApple.active && goldenApple.x===head.x && goldenApple.y===head.y) {
+        score+=3;
+        pendingGrowth+=3;
+        goldenApple.active=false;
+    
+    }
+    if(pendingGrowth>0){
+        pendingGrowth--;
     }
     else snake.pop();
 }
@@ -92,6 +118,11 @@ function updateDirection(){
 }
 
 function updateGame(deltaTime){
+    //adding for golden apple
+    if(goldenApple.active){
+        goldenApple.timer -= deltaTime;
+        if(goldenApple.timer <= 0) goldenApple.active = false;
+    }
     // Accumulate time
     accumulator += deltaTime;
     // Update logic at fixed intervals
@@ -124,10 +155,10 @@ function resetGame(){
     Dir = ["R"];
     score = 0;
     moveDelay=speed[speedIndex].val;
-    lastTime=0;
-    time=0;
+    pendingGrowth=0;
     accumulator=0;
     generateFood(food);
+    goldenApple.active=false;
     scoreSaved=false;
     scoreSent=false;
     startTime=Date.now()

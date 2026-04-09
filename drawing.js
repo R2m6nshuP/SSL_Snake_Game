@@ -24,7 +24,7 @@ function displayFood(food){
 
     ctx.save();
     
-    ctx.shadowBlur=20;
+   // ctx.shadowBlur=20;
 
     // Apple body
     ctx.shadowColor="red";
@@ -47,7 +47,35 @@ function displayFood(food){
 
     ctx.restore();
 }
+// Display the Golden Apple if active
+function displaygoldenApple() {
+    if (!goldenApple.active) return; 
 
+    let centerX = Xoffset + goldenApple.x * gridSize + gridSize/2;
+    let centerY = Yoffset + goldenApple.y * gridSize + gridSize/2;
+
+    // Pulse rapidly if < 2 seconds left
+    let pulseSpeed = goldenApple.timer < 2000 ? 0.03 : 0.005;
+    let pulse = Math.sin(time * pulseSpeed) * 0.1; 
+    let radius = gridSize * (0.4 + pulse);
+
+    ctx.save();
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = "gold";
+    ctx.fillStyle = "gold";
+    
+    // Apple body
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Stem
+    ctx.shadowColor = "brown";
+    ctx.fillStyle = "brown";
+    ctx.fillRect(centerX - 2, centerY - radius - 5, 4, 8);
+
+    ctx.restore();
+}
 //showing score
 function displayScore(score){
     ctx.fillStyle = "green";
@@ -126,6 +154,7 @@ function displayGame(){
     // Draw everything
         displayBoard();
         displayFood(food);
+        displaygoldenApple();
         displayScore(score);
         if(gameState === "playing"){
             pauseButton.draw(ctx, mouseX, mouseY);
