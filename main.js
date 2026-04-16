@@ -1,3 +1,24 @@
+let btn =document.querySelector("#confirmbtn");
+let username = "playerName" ;
+let introScreen = document.querySelector("#startScreen")
+let flexBox = document.querySelector(".content")
+let alertBox=document.createElement("h3")
+alertBox.innerHTML=`<h3>Please enter a username to continue!</h3>`
+
+btn.addEventListener("click", function(){
+    username = document.querySelector("#username").value.trim();
+    if(username != ""){
+        introScreen.style.display = "none"; //removes the introscreen
+        
+    }
+    else{
+        flexBox.append(alertBox);
+
+    }
+
+})
+ 
+ 
 // let gameState = "menu";
  // let lastTime = 0;
 // let time = 0;
@@ -42,7 +63,7 @@ function gameLoop(timestamp){
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    name: "Player",
+                    name: username,
                     score: score,
                     duration: duration,
                     speed: speed[speedIndex].name,

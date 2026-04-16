@@ -7,3 +7,50 @@ html, body {
 canvas {
     display: block;
 }
+
+ .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw; /* 100% sccreen is covered */
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;  /*countainer */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+}
+.content {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.content input {
+    padding: 10px;
+    font-size: 16px;
+    width: 80%;
+    margin: 15px 0;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+.content button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /*  chnages to pointer */
+    font-weight: bold;
+}
+.content button:hover {
+  background-color: #27ae60;   /* pseudo class on hover */
+}
+h3{
+    color: #EE4B2B;
+}
