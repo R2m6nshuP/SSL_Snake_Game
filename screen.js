@@ -1,4 +1,3 @@
-//setup before game start
 function startScreen(){
     displayBoard();
     
@@ -34,7 +33,6 @@ function settingsScreen(){
     });
 }
 
-//setup at pause
 function pauseScreen(){
     ctx.fillStyle = "rgba(255, 255, 255, 0.30)";
     ctx.fillRect(Xoffset, Yoffset, cols*gridSize, rows*gridSize);
@@ -43,7 +41,6 @@ function pauseScreen(){
     ctx.fillText("Press P again to resume", canvas.width/2, canvas.height/2);
 }
 
-//setup after game over
 function gameOverScreen(){
     //transparent white screen
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
@@ -61,19 +58,21 @@ function gameOverScreen(){
     ctx.roundRect(px, py, panelW, panelH, panelH/10);
     ctx.fill();
 
-
+    //title
     ctx.fillStyle= "#ff4d4d";
     ctx.font = "40px Arial";
     ctx.textAlign = "center";
     ctx.fillText("Game Over!", canvas.width/2, py + panelH/10);
-    
-    if(score>highscore && !highScoreSaved){
-        highScoreSaved=true;
+
+    //updating highscore
+    if(score>highscore){
+        ctx.fillStyle = "gold";
         highscore=score;
         localStorage.setItem("highScore", highscore);
     }
-    
-    ctx.fillStyle = "white";
+
+    //other data
+    ctx.fillStyle = (score === highscore)? "gold" : "white";
     ctx.font = "20px Arial";
 
     ctx.fillText(`Score: ${score}`, canvas.width/2, py + 2*panelH/10);

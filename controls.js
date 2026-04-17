@@ -8,7 +8,10 @@ document.addEventListener("keydown", (e) => {
         if(e.key === "ArrowLeft" || e.key === "a") newDir = "L";
 
         if(Dir[Dir.length - 1] !== newDir && newDir){
-            Dir.push(newDir);
+            if(Dir.length < 5 ){
+                Dir.push(newDir);
+            }
+            //to prevent key spamming
         }
     }
 
@@ -61,10 +64,12 @@ canvas.addEventListener("click", (e) => {
         gameOverButtons.forEach(btn => btn.afterClick(mx, my));
     }
     else if(gameState === "playing"){
-        pauseButton.afterClick(mx, my);
+        playScreenButtons[0].afterClick(mx, my);
+        playScreenButtons[2].afterClick(mx, my);
     }
     else if(gameState === "paused"){
-        resumeButton.afterClick(mx, my);
+        playScreenButtons[1].afterClick(mx, my);
+        playScreenButtons[2].afterClick(mx, my);
     }
 });
 
@@ -76,6 +81,9 @@ canvas.addEventListener("mousemove", (e) => {
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
 });
+
+
+
 
 //temporary addition for phone
 //for direction on mobile screen

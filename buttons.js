@@ -22,15 +22,15 @@ class Button {
         let grd = ctx.createLinearGradient(this.x, this.y, this.x, this.y + this.h);
         grd.addColorStop(0, "red");
         grd.addColorStop(1, "#db9292");
-        ctx.fillStyle = grd;
+        ctx.fillStyle = grd;   //giving vertical gradient to buttons
         ctx.beginPath();
-        ctx.roundRect(this.x, this.y, this.w, this.h, this.h/3);
+        ctx.roundRect(this.x, this.y, this.w, this.h, this.h/3);   //last parameter is radius of rounded edges
         ctx.fill();
 
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
         ctx.font = isHover ? "bold 32px Arial" : "30px Arial";
-        ctx.textBaseline = "middle";
+        ctx.textBaseline = "middle";    //for mid point of text = mid point of button
         ctx.fillText(this.text, this.x + this.w/2, this.y + this.h/2);
     }
     //defining action after clicking the button
@@ -45,16 +45,14 @@ class Button {
 let menuButtons = [];
 let settingsButtons = [];
 let gameOverButtons = [];
-let pauseButton = new Button(Xoffset + cols*gridSize - 6*gridSize, Yoffset/8, 6*gridSize, 3*Yoffset/4, "PAUSE", () => {
-    gameState = "paused";
-});
-let resumeButton = new Button(Xoffset + cols*gridSize - 6*gridSize, Yoffset/8, 6*gridSize, 3*Yoffset/4, "RESUME", () => {
-    gameState = "playing";
-});
+let playScreenButtons = [];
+
+//some types and their indexes are defined, so that later if we want to add more elements just append it to the respective objects
 
 //for Game Mode
+//obstacles can be added in future
 let gameModes = [
-    {name: "NORMAL", wrap: false, ghost: false, obstacle: false},
+    {name: "CLASSIC", wrap: false, ghost: false, obstacle: false},
     {name: "WRAPPED", wrap: true, ghost: false, obstacle: false},
     {name: "GHOST", wrap: false, ghost: true, obstacle: false},
     {name: "FOREVER", wrap: true, ghost: true, obstacle: false}
@@ -62,7 +60,6 @@ let gameModes = [
 let gameModeIndex = 0;
 let gameMode=gameModes[0];
 
-//some types and their indexes are defined so later if we want to add more elements just append it to the respective iterable
 //for snake color
 let colors = [
     {name: "BLUE", val: {r:0,g:100,b:255}},
@@ -104,7 +101,9 @@ function updateGrid(){
     demoReset();        // reset snake properly
 }
 
+//as name suggests
 function setupButtons(){
+    //x and y for setting up buttons relative to middle of screen
     let x = Xoffset + cols*gridSize/2;
     let y = Yoffset + rows*gridSize/2;
     let btnW = Math.min(300, canvas.width * 0.25);
@@ -140,7 +139,8 @@ function setupButtons(){
 
         new Button(x - btnW/2, y + 1*btnH/3.5, btnW, btnH, "SPEED: SLOW", () => {
             speedIndex = (speedIndex + 1) % speed.length;
-            moveDelay = speed[speedIndex].val * (gridSize/30);
+            moveDelay = speed[speedIndex].val * (gridSize/30);  //to have same speed even with grid change
+            //moveDelay signifies time and gridSize is distance so distance/time should be same
         }),
 
         new Button(x - btnW/2, y + 6*btnH/3.5, btnW, btnH, "GRID: 30", () => {
@@ -153,6 +153,20 @@ function setupButtons(){
         new Button(x - btnW/2, y + 11*btnH/3.5, btnW, btnH, "BACK", () => {
             gameState = "menu";
         })
+    ];
+
+    playScreenButtons = [
+    new Button(Xoffset + cols*gridSize - btnW, Yoffset/8, btnW, 3*Yoffset/4, "PAUSE", () => {
+        gameState = "paused";
+    }),
+
+    new Button(Xoffset + cols*gridSize - btnW, Yoffset/8, btnW, 3*Yoffset/4, "RESUME", () => {
+        gameState = "playing";
+    }),
+
+    new Button(Xoffset + cols*gridSize - 2.2*btnW, Yoffset/8, btnW, 3*Yoffset/4, "QUIT", () => {
+        gameState = "gameOver";
+    })
     ];
 
     gameOverButtons = [

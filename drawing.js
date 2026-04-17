@@ -1,6 +1,6 @@
 //making grid
 function displayBoard(){
-    for( let i=0; i<rows; i++){
+    for(let i=0; i<rows; i++){
         for(let j=0; j<cols; j++){
             if((i+j)%2 === 0){
                 ctx.fillStyle = currentbg.light;
@@ -95,6 +95,7 @@ function displaySnake(progress){
     if(gameMode.ghost){
         ctx.globalAlpha = 0.7;
     }
+    //i-- because in ghost mode head should be on top of other body while overlapping
     for(let i=snake.length-1; i>=0; i--){
 
         let curr = snake[i];
@@ -139,13 +140,16 @@ function displayGame(){
     displayBoard();
     displayFood(food);
     displayScore(score);
-    //pause and resume buttons
+    //pause, resume and quit buttons
     if(gameState === "playing"){
-        pauseButton.draw(ctx, mouseX, mouseY);
+        playScreenButtons[0].draw(ctx, mouseX, mouseY);
+        playScreenButtons[2].draw(ctx, mouseX, mouseY);
     }
     else if(gameState === "paused"){
-        resumeButton.draw(ctx, mouseX, mouseY);
+        playScreenButtons[1].draw(ctx, mouseX, mouseY);
+        playScreenButtons[2].draw(ctx, mouseX, mouseY);
     }
+    
     // Draw snake
     let progress = accumulator / moveDelay;
     displaySnake(progress);

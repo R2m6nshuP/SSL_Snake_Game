@@ -5,7 +5,6 @@ let Dir=["R"] //direction of snake
 
 //creating snake
 snake = [{x:0, y:0}];
-//demoReset();  //defined at end of file
 //creating food
 let food = {
     x:0,
@@ -26,10 +25,11 @@ function foodInSnake(food){
 
 //function to generate food location at random place
 function generateFood(food){
-do {
+    do{
         food.x = Math.floor(Math.random()*cols);
         food.y = Math.floor(Math.random()*rows);
-} while(foodInSnake(food));
+    } 
+    while(foodInSnake(food));
 }
 
 //new snake head after movement
@@ -42,12 +42,14 @@ function getNewHead() {
 
 //checking gameover conditions
 function isGameOver(head){
+    //collision with wall
     if(!gameMode.wrap){
         if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
             causeOfDeath = "WALL"
             return true;
         }
     }
+    //collision with itself
     if(!gameMode.ghost){
         for (let i = 1; i < snake.length; i++) {
             if (head.x === snake[i].x && head.y === snake[i].y) {
@@ -67,7 +69,7 @@ function updateSnake(head){
     if(head.x === food.x && head.y === food.y){
         score++;
         //increase speed of snake in HELLMODE
-        if(speed[speedIndex].name == "HELLMODE" && moveDelay>35){
+        if(speed[speedIndex].name == "HELLMODE" && moveDelay>(40*gridSize/30)){
             moveDelay*=0.995;  
         }
         generateFood(food);
@@ -118,8 +120,8 @@ function updateGame(deltaTime){
             }
             else{
                 //updating demosnake variables
-            demoReset();
-            break;
+                demoReset();
+                break;
             }
         }
         updateSnake(head);
@@ -129,6 +131,7 @@ function updateGame(deltaTime){
 }
 //resetting all variables 
 function resetGame(){
+    //reset snake
     let startY = Math.floor(rows / 2);
     snake = [
         {x:3, y:startY},
@@ -136,17 +139,19 @@ function resetGame(){
         {x:1, y:startY}
     ];
     prevSnake = snake.map(part => ({...part}));
+    //reset direction
     dx = 1;
     dy = 0;
     currentDir = "R";
     Dir = ["R"];
-    score = 0;
+    //time related
     moveDelay=speed[speedIndex].val;
     lastTime=performance.now();
     time=0;
     accumulator=0;
+
+    score=0;
     generateFood(food);
-    highScoreSaved=false;
     scoreSent=false;
     causeOfDeath="";
     duration=0; //duration of game
@@ -163,7 +168,7 @@ function demoReset(){
         {x:1, y:startY}
     ];
     prevSnake = snake.map(part => ({...part}));
-    food = {x: -1, y: -1}
+    food = {x: -1, y: -1}  //moving food out of grid
     accumulator = 0;
     Dir=["R"];
     currentDir="R";
