@@ -3,21 +3,24 @@ Features
 Core Gameplay
 Movement using Arrow Keys / WASD
 Smooth snake movement with grid-based logic
-Pause / Resume / Restart functionality
+Pause / Resume / Quit / Restart functionality
 Dynamic difficulty levels (Easy / Medium / Hard)
-Adjustable canvas size
+Adjustable grid size
 ---------------------------------------------------
 Food System
 
-Carrot → +1 length
+Apple → +1 length
 Pumpkin Pie → +3 length
 Golden Apple → Temporary immunity
 ---------------------------------------------------
 Game Modes
 
+Classic mode available
 Wrap Mode (snake reappears on opposite side)
 Obstacle Mode (walls/blocks added)
-Classic mode available
+Ghost Mode( snake can pass through itself)
+Forever Mode( snake can't die )
+
 ---------------------------------------------------
 UI / UX
 
@@ -25,14 +28,13 @@ Changeable background themes
 Score display:
 Current score
 Highest score (session-based)
-Start & Game Over modals
-Eating animation + tongue animation
+Start, Settings, Game Over modals
 ---------------------------------------------------
 Sound effects:
-
+General
+Movement
 Eat
-Game Over
-Movement  
+Game Over  
 ---------------------------------------------------
 Leaderboard
 
