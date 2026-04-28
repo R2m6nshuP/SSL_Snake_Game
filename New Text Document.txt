@@ -1,5 +1,0 @@
-1. Title
-2. text style improve
-3. gameOver screen improve
-4. sound effects
-5. obstacles gamemode

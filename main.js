@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 let btn =document.querySelector("#confirmbtn");
 let username = "playerName" ;
 let introScreen = document.querySelector("#startScreen")
@@ -18,67 +17,7 @@ btn.addEventListener("click", function(){
     }
 
 })
- 
- 
-// let gameState = "menu";
- // let lastTime = 0;
-// let time = 0;
- // let accumulator = 0;
-let scoreSent = false;
-let startTime;
-let causeOfDeath;
-requestAnimationFrame(gameLoop);
-function gameLoop(timestamp){
-    if (lastTime === 0) lastTime = timestamp;
-    let deltaTime = timestamp - lastTime;
-    lastTime = timestamp;
-    time +=deltaTime;
 
-    // Clear screen
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    if(gameState === "menu"){
-        startScreen();
-    }
-    if(gameState === "settings"){
-        settingsScreen();
-    }
-    else if(gameState === "playing"){
-        updateGame(deltaTime);
-        displayGame();
-    }
-    else if(gameState === "paused"){
-        displayGame();
-        pauseScreen();
-    }
-    else if(gameState === "gameOver"){
-        displayGame();
-        gameOverScreen();
-        if(!scoreSent){
-            let duration = Math.round((Date.now() - startTime)/1000)
-            fetch("http://127.0.0.1:5000/save_score", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    name: username,
-                    score: score,
-                    duration: duration,
-                    speed: speed[speedIndex].name,
-                    cause: causeOfDeath
-                })
-            })
-            scoreSent = true;
-        }
-    }
-
-    // Continue loop  
-    requestAnimationFrame(gameLoop);
-}
-=======
 startScreen();
 scoreSent = false;
 let causeOfDeath;
@@ -102,7 +41,7 @@ function gameLoop(timestamp){
     if(shakeTime > 0){
         let progress = shakeTime / shakeDuration;
 
-    // easing (strong → weak)
+    // easing (strong -> weak)
         let strength = shakeIntensity * progress;
 
         shakeX = (Math.random() - 0.5) * 2 * strength;
@@ -167,4 +106,4 @@ function gameLoop(timestamp){
     // Continue loop  
     requestAnimationFrame(gameLoop);
 }
->>>>>>> Om's-branch
+
