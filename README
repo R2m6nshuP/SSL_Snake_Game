@@ -1,67 +1,172 @@
-Features
+# Snake Stack
 
-Core Gameplay
-Movement using Arrow Keys / WASD
-Smooth snake movement with grid-based logic
-Pause / Resume / Quit / Restart functionality
-Dynamic difficulty levels (Easy / Medium / Hard)
-Adjustable grid size
----------------------------------------------------
-Food System
+A simple browser-based Snake game built using three layers:
+a JavaScript frontend, a Python (Flask) backend to save scores, and a Bash tool to manage data.
 
-Apple → +1 length
-Pumpkin Pie → +3 length
-Golden Apple → Temporary immunity
----------------------------------------------------
-Game Modes
+**Authors:**
+Ramanshu Padole, Om Chavan
 
-Classic mode available
-Wrap Mode (snake reappears on opposite side)
-Obstacle Mode (walls/blocks added)
-Ghost Mode( snake can pass through itself)
-Forever Mode( snake can't die )
+---
 
----------------------------------------------------
-UI / UX
+##  Overview
 
-Changeable background themes
-Score display:
-Current score
-Highest score (session-based)
-Start, Settings, Game Over modals
----------------------------------------------------
-Sound effects:
-General
-Movement
-Eat
-Game Over  
----------------------------------------------------
-Leaderboard
+Snake Stack is made to show how different parts of a system can work separately but still connect smoothly.
 
-Persistent score storage via backend
-Tracks:
-Username
-Score
-Cause of death
-Duration
----------------------------------------------------
+* **Frontend (JavaScript):** Runs the game in the browser
+* **Backend (Flask):** Saves game scores
+* **Admin Tool (Bash):** Helps manage and analyze saved data
 
-Authors
-Om Chavan
-Ramanshu Padole
----------------------------------------------------
+---
 
-Future Improvements
-Multiplayer mode
----------------------------------------------------
-🐍 A Snake Stack: Triple-Layer ArchitectureA robust, browser-based Snake game featuring a three-layer architecture: a JavaScript/HTML5 frontend, a Python (Flask) backend for score persistence, and a Bash administration script for data management.
-👥 AuthorsRamanshu Padole  Om Chavan  
-🏗️ System ArchitectureThe project is divided into three distinct layers that communicate to ensure data integrity and performance:Frontend (JS): Handles the game loop, user input, and rendering via the Canvas API.Backend (Flask): A Python-based server that receives game results via a POST API and appends them to a flat file.Admin (Bash): A terminal-based utility to analyze and manage the game logs directly from history.txt.
-🎮 Game FeaturesCore Gameplay & UIControls: Steer using Arrow Keys or WASD. Use P to pause, R to restart, and Q to quit mid-game.  Dynamic Difficulty: Select between Easy, Medium, and Hard speeds.  Customization: Changeable background themes and adjustable grid sizes.  Sound Effects: High-fidelity audio for movement, eating food, and game-over events.  Game ModesClassic: Standard snake rules—hitting walls or self results in game over.  Wrap Mode: The snake reappears on the opposite side of the screen when hitting a boundary.  Obstacle Mode: Static walls and blocks are added to the grid to increase difficulty.  Ghost Mode: The snake becomes "transparent," allowing it to pass through its own body.  Forever Mode: An invincible mode where the snake cannot die, designed for high-speed practice.  Food SystemApple: Standard growth (+1 length).  Pumpkin Pie: Rare treat that provides a significant boost (+3 length).  Golden Apple: Grants temporary immunity/invincibility for a fixed duration.  
-🚀 Installation & Setup
-1. PrerequisitesEnsure you have Python 3 installed. You will need the Flask library.Bashpip install flask
-2. Starting the SystemTo start the Flask server and host the game:Bashpython3 app.py
-Navigate to [http://127.0.0.1:5000](http://127.0.0.1:5000) in your web browser to play.🛠️ Administration UtilityThe admin.sh script provides a menu-driven interface to manage the history.txt log.Bashbash admin.sh
-Functionalities include:Querying scores by Username.Viewing game analytics (mean score, survival time, cause of death).Log rotation (backing up the file and keeping the last 10 entries).Deleting entries by timestamp or username.📝 Data Format (history.txt)The backend records scores in a consistent, pipe-delimited format for easy Bash parsing:[Timestamp] Username | Mode | Score | Cause | Duration📄 Report CompilationA Makefile is provided in the report/ directory to compile the project documentation.Bashcd report
+##  System Architecture
+
+### 1. Frontend (JS)
+
+* Built using HTML5 Canvas
+* Handles:
+
+  * Game loop
+  * Drawing graphics
+  * Player input
+  * Game logic
+
+### 2. Backend (Flask)
+
+* Simple Python server
+* Receives game results
+* Stores them in a file called `history.txt`
+
+### 3. Admin Tool (Bash)
+
+* Command-line script (`admin.sh`)
+* Works directly with saved data
+* Used for analysis and cleanup
+
+---
+
+##  Game Features
+
+### Controls
+
+* Move: Arrow keys or WASD
+* `P`: Pause / Resume
+* `R`: Restart
+* `Q`: Quit
+
+### Gameplay
+
+* Difficulty levels: Easy, Medium, Hard
+* You can change:
+
+  * Background theme
+  * Grid size
+* Sound effects for:
+
+  * Movement
+  * Eating food
+  * Game over
+
+---
+
+##  Game Modes
+
+* **Classic:** Normal rules (hit wall or self = game over)
+* **Wrap:** Snake appears on the other side
+* **Ghost:** Snake can pass through itself
+* **Forever:** Snake cannot die (practice mode)
+
+---
+
+##  Food System
+
+* **Apple:** +1 length
+* **Pumpkin Pie:** +3 length (rare)
+* **Golden Apple:** Temporary invincibility (5–9 seconds)
+
+---
+
+##  Installation & Setup
+
+### 1. Requirements
+
+* Python 3
+* Flask
+
+Install Flask:
+
+```bash
+pip install flask
+```
+
+---
+
+### 2. Run the Game
+
+Start the server:
+
+python3 app.py
+
+Open in browser:
+
+http://127.0.0.1:5000
+
+---
+
+## Admin Tool
+
+Run:
+
+bash admin.sh
+
+### What it can do:
+
+* Check scores by username
+* Show stats:
+
+  * Average score
+  * Survival time
+  * Cause of death
+* Manage logs:
+
+  * Backup file
+  * Keep last 10 entries
+* Delete entries by username or time
+
+---
+
+##  Data Format
+
+Saved in `history.txt` like this:
+
+[Timestamp] Username | Mode | Score | Cause | Duration
+
+
+---
+
+## Report
+
+To build the project report:
+
+
+cd report
 make
-Requires pdflatex and bibtex to be installed on the system.
+
+
+### Commands:
+
+* `make` → Build PDF
+* `make clean` → Remove extra files
+* `make clean-all` → Remove everything including PDF
+
+---
+
+##  Summary
+
+Snake Stack is a simple full-stack project that shows:
+
+* How a frontend works
+* How a backend saves data
+* How command-line tools manage data
+
+
+---
