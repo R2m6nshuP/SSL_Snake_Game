@@ -1,6 +1,6 @@
 document.addEventListener("keydown", (e) => {
     //controlling direction
-    if(gameState === "playing" || true){
+    if(true){
         let newDir = null;
         if(e.key === "ArrowUp" || e.key === "w") newDir = "U";
         if(e.key === "ArrowDown" || e.key === "s") newDir = "D";

@@ -210,7 +210,7 @@ function resetGame(){
     currentDir = "R";
     Dir = ["R"];
     //time related
-    moveDelay=speed[speedIndex].val;
+    moveDelay=speed[speedIndex].val* (gridSize/30);
     lastTime=performance.now();
     time=0;
     accumulator=0;
