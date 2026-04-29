@@ -7,13 +7,21 @@
     note = {Used for rendering the game grid, snake, and UI elements}
 }
 
-@online{flask ,
+@online{w3schools,
+    author = {{W3Schools}},
+    title = {W3Schools Online Web Tutorials},
+    year = {2026},
+    url = {https://www.w3schools.com/},
+    note = {Used for learning canvas, gradients, and general web development concepts}
+}
+@online{w3school ,
     author = {Pallets Projects},
     title = {Flask Documentation},
     year = {2026},
     url = {https://flask.palletsprojects.com/},
     note = {Backend framework used for the score persistence server}
 }
+
 
 @online{mdn_fetch,
     author = {{Mozilla Developer Network}},
@@ -78,8 +86,24 @@
 The following external libraries were used in the game: 
 \begin{itemize}
     \item \textbf{HTML5 Canvas API:} It is used to draw the grid, the snake, and all the menu buttons directly in the browser .
+    \begin{itemize}
+    \item Core rendering engine for the game.
+    \item Used to draw the snake, food, animations, and effects (shake, glow, pulse).
+    \item Enables real-time graphics without external libraries.
+    \end{itemize}
     \item \textbf{Flask (Python):} We used Flask as our backend server to save player scores, cause of death, time of gameplay,timestamp, username to a file so they don't disappear when the page is closed .
-    \item \textbf{Fetch API:} This allows the game to "talk" to our server, sending details like the final score and how the player died without refreshing the page.  
+    \begin{itemize}
+    \item to build the backend server.
+    \item Handles HTTP requests and routes (e.g., /save\_score).
+    \item Processes incoming JSON data from the frontend and stores it in history.txt.
+    \end{itemize}
+    \item \textbf{Fetch API:} This allows the game to "talk" to our server, sending details like the final score and how the player died without refreshing the page.
+    \begin{itemize}
+        \item Used to send game data to the Flask backend.
+        \item Performs POST requests without reloading the page.
+        \item Ensures smooth gameplay experience during score submission.
+    \end{itemize}
+    \item \textbf{Bash Utilities (GNU Coreutils)}
 \end{itemize}
 
 \section{How the System Works}
@@ -88,19 +112,103 @@ To keep the code clean and easy to manage, we split the game into three main par
     \item \textbf{The Input Handler (\texttt{controls.js}, \texttt{buttons.js}):} This listens for key presses, mouse clicks, or screen swipes. We used an input "queue" so the game remembers your next move even if you press keys really fast, which prevents the snake from accidentally turning into itself .
     \item \textbf{The Game Logic (\texttt{snake.js}, \texttt{main.js}):} This is the "brain" of the game. It handles movement and collisions. We used a special timer called an "accumulator" to make sure the snake moves at the same speed on every computer, whether it's a slow laptop or a fast gaming monitor .
     \item \textbf{The Visual Renderer (\texttt{drawing.js}, \texttt{screen.js}):} This part is strictly for drawing. It handles smooth animations between grid cells and visual effects like the screen shaking when you lose .
+    \item \textbf{Log Inspection And Management: (\texttt{admin.sh)}} Key tools used:
+    \begin{description}
+        \item[awk: ]  analytics, aggregation 
+        \item[sed: ]  deletion/editing
+        \item[cut: ]  field extraction
+       \item[sort: ]   ordering logs
+       \item[tail: ]  recent entries
+       \item[grep: ]  filtering
+       \item[printf: ]  structured output
+       \item[xargs: ] trimming whitespaces
+    \end{description}
 \end{itemize}
 
 \section{Game Features}
 We added several features to make the classic Snake game more exciting:
 \begin{itemize}
+    \item \textbf{ Classic Snake game built using HTML5 Canvas with smooth rendering.}
+\item  \textbf{Grid-based movement with dynamic speed control.}
+\item \textbf{Collision detection for:}
+\begin{itemize}
+    \item Wall collisions
+    \item Self collisions 
+\end{itemize}
     \item \textbf{Multiple Game Modes:} You can play the \textit{Normal} game, a \textit{Wrapped} mode where you can go through walls, a \textit{Ghost} mode where the snake is see-through, and a \textit{Forever} mode that combines them .
     \item \textbf{Customization:} In the settings menu, players can change the snake's color, pick a theme (like "Neon" or "Dark"), adjust the speed, and even change the size of the grid .
-    \item \textbf{Special Items:} 
+    \item \textbf{Advanced Food System:} 
     \begin{itemize}
         \item \textit{Pumpkin Pie:} A rare treat that gives you 3 more points and makes you grow faster with a chance of 30\% of spawning after eating an apple .
-        \item \textit{Enchanted Apple:} This makes the snake golden-white colored and invincible for [5-9] seconds, allowing you to pass through walls even in normal mode spawing after a variable time of [20-60] sec  .
+        \item \textit{Enchanted Apple:} This makes the snake golden-white colored and invincible for [5-9] seconds, allowing you to pass through walls even in normal mode spawing after a variable time of [20-60] sec 
+        \item Smart spawning system avoids overlap with snake or other food.
     \end{itemize}
-    \item \textbf{Play Anywhere:} The game works with a keyboard, mouse clicks, or touch swipes for mobile users .
+    \item \textbf{Includes:}
+	\begin{itemize}
+    \item Timed spawning
+	\item Limited visibility duration
+	\item Temporary effect duration
+    \item Pulse animation indicating very less time remaining
+    \end{itemize}
+\item \textbf{Game Mechanics & Effects}
+\begin{itemize}
+
+\item Smooth snake movement using interpolation.
+\item Dynamic difficulty scaling (e.g., speed increase in Hell Mode).
+\item \textbf{Visual Polish: }
+\begin{itemize} 
+\item Pulsing food animations
+\item Glow effects using canvas shadows
+\item Animated snake body gradient
+\item Direction-aware eyes
+\item Screen shake effect on death.
+\end{itemize}
+\end{itemize}
+     \item \textbf{State & Input Management:}
+	\begin{itemize}
+    \item Direction queue system prevents illegal reverse moves.
+\item Frame-independent updates using deltaTime.
+\item Separate game states like \textit{Playing, Paused, Game Over, Demo mode}(Start and Settings)
+	
+    \end{itemize}
+     \item \textbf{Score Persistence (Frontend + Backend):}
+	\begin{itemize}
+    \item Automatically sends score to backend using Fetch API (POST).
+\item No page refresh required.
+\item Data stored includes:
+\begin{itemize}
+\item Username
+\item Score
+\item Game mode
+\item Speed
+\item Cause of death
+\item Duration
+\item Grid size
+\end{itemize}
+\end{itemize}
+     \item \textbf{Bash Admin Tool:}
+	\begin{itemize}
+    \item Query logs by username:
+    \begin{itemize}
+\item View analytics:
+\item Mean score
+\item Mean survival time
+\item Death distribution
+\item Max and min score
+\end{itemize}
+\item Delete entries by:
+\begin{itemize}
+\item Timestamp
+\item Scoresername
+\end{itemize}
+\item Perform log rotation (backup + keep last 10 entries)
+\item Additional:
+\begin{itemize}
+\item Custom pagination system
+\item Confirmation before deletion
+\item Formatted table output for readability
+\end{itemize}
+\end{itemize}
     \item \textbf{Keyboard Controls:} Pressing \textbf{\textit{R}} restarts the game and \textbf{\textit{P}} can be used to pause and resume the game along with the button present on the screen. Pressing \textbf{\textit{Q}} midgame quits the game especially in the \textit{"Forever"} mode with casue of death sent as \textit{Quit} and pressing in setting takes you to the main menu.
 \end{itemize}
 
@@ -128,26 +236,107 @@ snake-system/
 \begin{lstlisting} 
 pip install Flask  
 \end{lstlisting}
-2. \textbf{Start the Server:} Run \texttt{python3 app.py} so the game can save your scores.
-3. \textbf{Launch the Game:} Just open \texttt{index.html} in your favorite browser .
+2. \textbf{Start the Server:} Run below code so the game can save your scores. \begin{lstlisting} 
+python3 app.py 
+\end{lstlisting} \\
+3. \textbf{Launch the Game:} Just open in your favorite browser
+\begin{lstlisting}
+http://127.0.0.1:5000
+\end{lstlisting} 
 
 \section{Challenges We Faced}
 \begin{itemize}
-    \item \textbf{Merge conflicts: } When we merged the two branches, spent a lot of time on solving conflcits, we could have finalized the variables first then worked upon it. 
-    \item \textbf{The Speed Problem:} At first, the snake moved way too fast on high-end monitors. We fixed this by decoupling the game's logic from the screen's refresh rate .
-    \item \textbf{Accidental Suicides:} Sometimes pressing two keys quickly would make the snake turn 180 degrees and die instantly. We solved this by creating a "buffer" that only allows one valid turn per move .
+ 
+\item \textbf{Beginning Phase of the Game}
+
+\begin{itemize}
+
+\item \textbf{How to display everything on screen the way we want?} \\
+Solution: Used \texttt{ctx}, \texttt{fillRect}, and other canvas features to display everything.
+
+\item \textbf{How to move the snake?} \\
+Solution: Created a grid system and used coordinates for the snake position, then moved the snake grid by grid.
+
+\item \textbf{How to increase snake length?} \\
+Solution: Avoided updating the tail so that a new head (one more element in the snake array) is created while maintaining smooth visuals.
+
 \end{itemize}
 
-\section{How to Play}
-When you open the game, you'll see an interface to  enter your username , then menu screen is visible where you can choose your mode or head to "Settings" to customize your experience . Use the \textbf{Arrow keys} or \textbf{WASD} to steer.  
+\item \textbf{Middle Phase of the Game}
 
+\begin{itemize}
+
+\item \textbf{How to make snake animation smooth?} \\
+Solution: Initially used \texttt{setTimeLoop}, later replaced with \texttt{requestAnimationFrame} for smoother frame-by-frame animation.
+
+\item \textbf{How to create menu, settings, playing, and game over states?} \\
+Solution: Introduced a \texttt{gameState} variable to manage different states and render appropriate screens.
+
+\item \textbf{How to add game features like speed, grid size, and game modes?} \\
+Solution: Added buttons and used an array of objects to switch between configurations. Each object defines features such as wrap and ghost modes.
+
+\end{itemize}
+
+\item \textbf{End Phase of the Game}
+
+\begin{itemize}
+
+\item \textbf{How to implement multiple types of food?} \\
+Solution: Converted the single food object into an array of food objects with different types, attributes, and spawn timers.
+
+\item \textbf{How to improve graphics?} \\
+Solution: Used canvas gradients (inspired by W3Schools) for UI elements and screens. Implemented effects like wall shake by varying reference coordinates.
+
+\item \textbf{How to be original and creative?} \\
+Solution: Continuously reviewed and refined code, added inline comments, optimized logic, and experimented with new ideas whenever possible.
+ 
+\end{itemize}
+\end{itemize}
+\section{How to Play}
+
+\begin{itemize}
+\item On opening the game, an interface will appear prompting you to enter a username. Enter an appropriate username to continue.
+\item After that, three buttons will be visible: \textbf{PLAY}, \textbf{SETTINGS}, and \textbf{CLASSIC}.
+\item \textbf{PLAY Button:} Starts the game.
+\item \textbf{SETTINGS Button:} 
+\begin{itemize}
+    \item Opens the settings screen.
+    \item Allows you to change snake color, background theme, snake speed, and grid size.
+    \item Click on the respective buttons to modify each feature.
+    \item Includes a \textbf{BACK} button to return to the main menu.
+\end{itemize}
+\item \textbf{Gamemode Button:}
+\begin{itemize}
+    \item Displays the currently selected game mode (default is \textbf{CLASSIC}).
+    \item Available game modes:
+    \begin{itemize}
+        \item \textbf{CLASSIC:} The snake dies upon colliding with the wall or itself.
+    \item \textbf{WRAP:} The snake only dies when colliding with itself and can wrap around walls.
+       \item \textbf{GHOST:} The snake dies only when colliding with walls and can pass through itself.
+      \item \textbf{FOREVER:} The snake cannot die. The game can only be exited using the \textbf{QUIT} button.
+    \end{itemize}
+\end{itemize}
+\item A demo snake is visible on both the menu and settings screens. You can control it using \textbf{WASD} or arrow keys. Its purpose is to demonstrate features such as snake color and background theme.
+\item After selecting the desired game mode and settings, click the \textbf{PLAY} button.
+\item Control the snake using \textbf{WASD} or arrow keys.
+\item Press \textbf{P} on the keyboard or click the \textbf{PAUSE} button to pause the game. Use the same controls to resume
+\item Press \textbf{Q} on the keyboard or click the \textbf{QUIT} button to exit the game during play. A game over screen will appear afterward.
+\item On the game over screen:
+\begin{itemize}
+    \item Click \textbf{RESTART} to play again.
+    \item Click \textbf{MENU} to return to the main menu.
+\end{itemize}
+\item Score as many points as possible by eating food items.
+\end{itemize}
+
+ 
 \section{Ten Hour Expansion Plan}
 If given 10 additional hours, we would focus on:
 \begin{itemize}
     \item \textbf{Sound Effects} Sounds effect for events like hitting wall or eating apple.
-    \item \textbf{  More Food Items:} Implementing food like rotten apple that reduces health and chilli which would increase speed for variable time.
+    \item \textbf{More Food Items:} Implementing food like rotten apple that reduces health and chilli which would increase speed for variable time.
     \item \textbf{  Obstacles Variety:} Implementing moving barriers and levels that increase in difficulty.
-    \item \textbf{Global Leaderboard:} Developing a public page to display top scores from \texttt{history.txt}.
+    \item \textbf{Animations:} More animations making better aesthetics.
 \end{itemize}
 \nocite{*}
 \printbibliography
