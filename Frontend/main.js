@@ -4,12 +4,12 @@ let introScreen = document.querySelector("#startScreen")
 let flexBox = document.querySelector(".content")
 let alertBox=document.createElement("h3")
 alertBox.innerHTML=`<h3>Please enter a username to continue!</h3>`
-
+let gameStarted=false;
 btn.addEventListener("click", function(){
     username = document.querySelector("#username").value.trim();
     if(username != ""){
         introScreen.style.display = "none"; //removes the introscreen
-        
+        gameStarted=true;
     }
     else{
         flexBox.append(alertBox);
@@ -18,42 +18,33 @@ btn.addEventListener("click", function(){
 
 })
 
-startScreen();
-scoreSent = false;
+scoreSent = false; //is score sent to flask?
 let causeOfDeath;
 let duration=0;
 //variables for screen shake at gameOver
 let shakeTime = 0;
 let shakeDuration = 400; // ms
-let shakeIntensity = 8;  // pixels
 
+//Starting game loop
 requestAnimationFrame(gameLoop);
+//whole game works with this
 function gameLoop(timestamp){
-    let deltaTime = timestamp - lastTime;
+    let deltaTime = timestamp - lastTime;  //time between frames
     lastTime = timestamp;
-    time +=deltaTime;
+    time +=deltaTime; //for food pulsing
+
     //shake screen at gameOver
-    ctx.save();
-
-    let shakeX = 0;
-    let shakeY = 0;
-
     if(shakeTime > 0){
-        let progress = shakeTime / shakeDuration;
-
-    // easing (strong -> weak)
-        let strength = shakeIntensity * progress;
-
-        shakeX = (Math.random() - 0.5) * 2 * strength;
-        shakeY = (Math.random() - 0.5) * 2 * strength;
+        //shakes in the direction of collision
+        Xoffset = (canvas.width - cols*gridSize)/2 + (dx * (Math.random()/2 + 0.5)) * 0.5 * gridSize;
+        Yoffset = (canvas.height - rows*gridSize)/2 + (dy * (Math.random()/2 + 0.5)) * 0.5 * gridSize;
 
         shakeTime -= deltaTime;
     }
 
-    ctx.translate(shakeX, shakeY);
-
     // Clear screen
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Redraw
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -72,12 +63,15 @@ function gameLoop(timestamp){
         displayGame();
     }
     else if(gameState === "paused"){
+        time-=deltaTime;    //food should not pulse during pause
         displayGame();
         pauseScreen();
     }
     else if(gameState === "gameOver"){
         displayGame();
-        gameOverScreen();
+        //Game Over screen after shake
+        if(shakeTime <= 0) gameOverScreen();
+        //sending data
         if(!scoreSent){
             fetch("http://127.0.0.1:5000/save_score", {
                 method: "POST",
@@ -90,7 +84,8 @@ function gameLoop(timestamp){
                     duration: Math.round(duration/1000),
                     speed: speed[speedIndex].name,
                     cause: causeOfDeath,
-                    gameMode: gameMode.name
+                    gameMode: gameMode.name,
+                    gridSize: gridSize 
                 })
             })
             //for debugging if needed
@@ -101,9 +96,10 @@ function gameLoop(timestamp){
             scoreSent = true;
         }
     }
+    //resetting for shake frames
+    Xoffset = (canvas.width - cols*gridSize)/2;
+    Yoffset = (canvas.height - rows*gridSize)/2;
 
-    ctx.restore();
-    // Continue loop  
+    // Make next frame  
     requestAnimationFrame(gameLoop);
 }
-

@@ -1,4 +1,3 @@
-//setup before game start
 function startScreen(){
     displayBoard();
     
@@ -34,7 +33,6 @@ function settingsScreen(){
     });
 }
 
-//setup at pause
 function pauseScreen(){
     ctx.fillStyle = "rgba(255, 255, 255, 0.30)";
     ctx.fillRect(Xoffset, Yoffset, cols*gridSize, rows*gridSize);
@@ -43,7 +41,6 @@ function pauseScreen(){
     ctx.fillText("Press P again to resume", canvas.width/2, canvas.height/2);
 }
 
-//setup after game over
 function gameOverScreen(){
     //transparent white screen
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
@@ -54,27 +51,31 @@ function gameOverScreen(){
     let px = canvas.width/2 - panelW/2;
     let py = canvas.height/2 - panelH/2;
     let grd = ctx.createLinearGradient(px, py, px, py + panelH);
-    grd.addColorStop(0, "#3939d8");
-    grd.addColorStop(1, "#a30b39");
+    grd.addColorStop(0, "#ffffff");
+    grd.addColorStop(0.05, "#191717");
+    grd.addColorStop(0.95, "#292828");
+    grd.addColorStop(1, "#ffffff");
     ctx.fillStyle = grd;
     ctx.beginPath();
     ctx.roundRect(px, py, panelW, panelH, panelH/10);
     ctx.fill();
 
-
+    //title
     ctx.fillStyle= "#ff4d4d";
     ctx.font = "40px Arial";
     ctx.textAlign = "center";
     ctx.fillText("Game Over!", canvas.width/2, py + panelH/10);
-    
-    if(score>highscore && !highScoreSaved){
-        highScoreSaved=true;
+
+    //updating highscore
+    if(score>highscore){
+        ctx.fillStyle = "gold";
         highscore=score;
         localStorage.setItem("highScore", highscore);
     }
-    
-    ctx.fillStyle = "white";
-    ctx.font = "20px Arial";
+
+    //other data
+    ctx.fillStyle = (score === highscore)? "gold" : "white";
+    ctx.font = (score === highscore)? "bold 20px Arial" : "20px Arial";
 
     ctx.fillText(`Score: ${score}`, canvas.width/2, py + 2*panelH/10);
     ctx.fillText(`High Score: ${highscore}`, canvas.width/2, py + 2.75*panelH/10);
@@ -82,7 +83,6 @@ function gameOverScreen(){
     ctx.fillText(`Time: ${Math.round(duration/1000)}s`, canvas.width/2, py + 4.25*panelH/10);
     ctx.fillText(`Mode: ${gameMode.name}`, canvas.width/2, py + 5*panelH/10);
     gameOverButtons.forEach(btn => {
-    btn.draw(ctx, mouseX, mouseY);
-});
+        btn.draw(ctx, mouseX, mouseY);
+    });
 }
- 

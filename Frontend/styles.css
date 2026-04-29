@@ -8,7 +8,7 @@ canvas {
     display: block;
 }
 
- .overlay {
+.overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -20,6 +20,7 @@ canvas {
     align-items: center;
     z-index: 1000; 
 }
+
 .content {
     background: #fff;
     padding: 30px 40px;
@@ -45,12 +46,13 @@ canvas {
     color: white;
     border: none;
     border-radius: 5px;
-    cursor: pointer; /*  chnages to pointer */
+    cursor: pointer; /*  changes to pointer */
     font-weight: bold;
 }
 .content button:hover {
   background-color: #27ae60;   /* pseudo class on hover */
 }
+
 h3{
     color: #EE4B2B;
 }
