@@ -70,7 +70,6 @@ function gameOverScreen(){
     if(score>highscore){
         ctx.fillStyle = "gold";
         highscore=score;
-        localStorage.setItem("highScore", highscore);
     }
 
     //other data
