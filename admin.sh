@@ -64,7 +64,7 @@ query_user() {
     echo ""
     echo "-- Summary --"
 
-    echo "$matches" | awk -F'|' '
+    echo "$matches" | awk -F"|" '
     BEGIN {sum_score=0; sum_time=0; wall=0; self=0; n=0}
     {
         score=$3+0
@@ -97,7 +97,16 @@ view_recent() {
     echo "$entries" | paginate 10
 }
 
- 
+rotate_logs() {
+    check_file || return
+    local timestamp=$(date +%Y%m%d_%H%M%S) #  backup with timestamp
+    local backup_name="history_${timestamp}.txt"
+    cp "$HISTORY_FILE" "$backup_name"
+    echo "Backup created: $backup_name"
+    tail -n 10 "$HISTORY_FILE" > temp_history.txt && mv temp_history.txt "$HISTORY_FILE"  # only the last 10 entries using tail in original file
+    
+    echo "Rotation complete. '$HISTORY_FILE' now contains only the last 10 entries."
+} 
 view_analytics() {
     check_file || return
 
@@ -134,11 +143,41 @@ view_analytics() {
 delete_entries() {
     check_file || return
 
-    read -rp "Delete username: " username
-    [[ -z "$username" ]] && return
+    echo "--- Delete Menu ---"
+    echo "1) By Username"
+    echo "2) By Exact Timestamp"
+    echo "3) Clean Invalid Formats (Non-matching rows)"
+    read -rp "Choice: " del_choice
 
-    sed -i "/$username |/Id" "$HISTORY_FILE" #deleted all lines with that username
-    echo "Deleted entries for $username"
+    case "$del_choice" in
+        1)
+            read -rp "Enter username to delete: " username
+            [[ -z "$username" ]] && return
+            pattern="/$username |/Id"
+            msg="Deleted all entries for user: $username"
+            ;;
+        2)
+            read -rp "Enter timestamp (YYYY-MM-DD HH:MM:SS): " ts
+            [[ -z "$ts" ]] && return
+            pattern="/\[$ts\]/d"
+            msg="Deleted entry at timestamp: $ts"
+            ;;
+        3)
+            # regex to match your specific format: [Date Time] User | Mode | Score | Cause | Duration
+            pattern='/^\[[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\} [0-9]\{2\}:[0-9]\{2\}:[0-9]\{2\}\].*|.*|.*|.*|.*|/!d'
+            msg="Cleaned up all entries not matching the standard format."
+            ;;
+        *) echo "Invalid choice"; return ;;
+    esac
+
+    # Confirmation step
+    read -rp "Are you sure you want to proceed? (y/n): " confirm
+    if [[ "${confirm,,}" == "y" ]]; then
+        sed -i "$pattern" "$HISTORY_FILE"
+        echo "$msg"
+    else
+        echo "Operation cancelled."
+    fi
 }
  
 view_sorted() {
@@ -171,10 +210,11 @@ main_menu() {
         echo "3) Analytics"
         echo "4) Delete"
         echo "5) Sort Logs"
-        echo "6) Exit"
+        echo "6) Rotate Logs"
+        echo "7) Exit"
         echo "============================="
         echo ""
-        read -rp "Enter choice [1-6]: " choice
+        read -rp "Enter choice [1-7]: " choice
 
         case "$choice" in
             1) query_user ;;
@@ -182,7 +222,8 @@ main_menu() {
             3) view_analytics ;;
             4) delete_entries ;;
             5) view_sorted ;;
-            6) exit ;;
+            6) rotate_logs;;
+            7) exit ;;
             *) echo "Invalid Input" ;; #other inputs
         esac
     done
