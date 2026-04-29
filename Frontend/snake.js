@@ -139,7 +139,7 @@ function updateGame(deltaTime){
         enchantedSpawnTimer-=deltaTime;
         if(enchantedSpawnTimer<=0){
             generateenchantedApple();
-            enchantedSpawnTimer=Math.random()*10000+20000;  //spawn in [20,120]
+            enchantedSpawnTimer=Math.random()*10000+20000;  
         }
     } 
 
@@ -151,21 +151,20 @@ function updateGame(deltaTime){
             enchantedEffectTimer=0;
         }
     }
-    if(gameMode.wrap){
-            head.x = (head.x + cols) % cols;
-            head.y = (head.y + rows) % rows;
-    }
+    
 
     accumulator += deltaTime;
-    demoReset();
-
+    
     while(accumulator > moveDelay){
 
         updateDirection();
 
         prevSnake = snake.map(part => ({...part}));
         let head = getNewHead();
-
+        if(gameMode.wrap){
+            head.x = (head.x + cols) % cols;
+            head.y = (head.y + rows) % rows;
+    }
         if(isGameOver(head)){
             if(isEnchanted){ //wrapping around the walls
                 if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {

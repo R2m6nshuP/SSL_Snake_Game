@@ -1,0 +1,154 @@
+\begin{filecontents}{refer.bib}
+@online{ canvas,
+    author = {{Mozilla Developer Network}},
+    title = {Canvas API},
+    year = {2026},
+    url = {https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API},
+    note = {Used for rendering the game grid, snake, and UI elements}
+}
+
+@online{flask ,
+    author = {Pallets Projects},
+    title = {Flask Documentation},
+    year = {2026},
+    url = {https://flask.palletsprojects.com/},
+    note = {Backend framework used for the score persistence server}
+}
+
+@online{mdn_fetch,
+    author = {{Mozilla Developer Network}},
+    title = {Fetch API},
+    year = {2026},
+    url = {https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API},
+    note = {Used to send game session data to the Flask server}
+}
+
+@online{ requestAnimationFrame,
+    author = {{Mozilla Developer Network}},
+    title = {window.requestAnimationFrame()},
+    year = {2026},
+    url = {https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame},
+    note = {Used to create the smooth game loop and animations}
+}
+
+@online{localstorage,
+    author = {{Mozilla Developer Network}},
+    title = {Window: localStorage property},
+    year = {2026},
+    url = {https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage},
+    note = {Utilized for persistent high score storage on the client side}
+}
+\end{filecontents}
+
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{mdframed}
+\usepackage[backend=bibtex]{biblatex}
+\addbibresource{refer.bib}
+ 
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10}
+}
+
+\title{\textbf{Snake Game: Project Development Report}}
+\author{Ramanshu Padole and Om Chavan}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{External Library}
+The following external libraries were used in the game: 
+\begin{itemize}
+    \item \textbf{HTML5 Canvas API:} It is used to draw the grid, the snake, and all the menu buttons directly in the browser .
+    \item \textbf{Flask (Python):} We used Flask as our backend server to save player scores, cause of death, time of gameplay,timestamp, username to a file so they don't disappear when the page is closed .
+    \item \textbf{Fetch API:} This allows the game to "talk" to our server, sending details like the final score and how the player died without refreshing the page.  
+\end{itemize}
+
+\section{How the System Works}
+To keep the code clean and easy to manage, we split the game into three main parts:
+\begin{itemize}
+    \item \textbf{The Input Handler (\texttt{controls.js}, \texttt{buttons.js}):} This listens for key presses, mouse clicks, or screen swipes. We used an input "queue" so the game remembers your next move even if you press keys really fast, which prevents the snake from accidentally turning into itself .
+    \item \textbf{The Game Logic (\texttt{snake.js}, \texttt{main.js}):} This is the "brain" of the game. It handles movement and collisions. We used a special timer called an "accumulator" to make sure the snake moves at the same speed on every computer, whether it's a slow laptop or a fast gaming monitor .
+    \item \textbf{The Visual Renderer (\texttt{drawing.js}, \texttt{screen.js}):} This part is strictly for drawing. It handles smooth animations between grid cells and visual effects like the screen shaking when you lose .
+\end{itemize}
+
+\section{Game Features}
+We added several features to make the classic Snake game more exciting:
+\begin{itemize}
+    \item \textbf{Multiple Game Modes:} You can play the \textit{Normal} game, a \textit{Wrapped} mode where you can go through walls, a \textit{Ghost} mode where the snake is see-through, and a \textit{Forever} mode that combines them .
+    \item \textbf{Customization:} In the settings menu, players can change the snake's color, pick a theme (like "Neon" or "Dark"), adjust the speed, and even change the size of the grid .
+    \item \textbf{Special Items:} 
+    \begin{itemize}
+        \item \textit{Pumpkin Pie:} A rare treat that gives you 3 more points and makes you grow faster with a chance of 30\% of spawning after eating an apple .
+        \item \textit{Enchanted Apple:} This makes the snake golden-white colored and invincible for [5-9] seconds, allowing you to pass through walls even in normal mode spawing after a variable time of [20-60] sec  .
+    \end{itemize}
+    \item \textbf{Play Anywhere:} The game works with a keyboard, mouse clicks, or touch swipes for mobile users .
+    \item \textbf{Keyboard Controls:} Pressing \textbf{\textit{R}} restarts the game and \textbf{\textit{P}} can be used to pause and resume the game along with the button present on the screen. Pressing \textbf{\textit{Q}} midgame quits the game especially in the \textit{"Forever"} mode with casue of death sent as \textit{Quit} and pressing in setting takes you to the main menu.
+\end{itemize}
+
+\section{Project Organization}
+Here is how our files are organized:
+\begin{lstlisting}
+snake-system/
+├── app.py             # The server that saves your scores
+├── history.txt        # A text file that logs every game played 
+├── admin.sh        # This script file is used to view statistics
+├── Frontend/            # All the games css and js file
+│   ├── buttons.js     # Logic for all menu and setting buttons 
+│   ├── controls.js    # How the game handles your inputs 
+│   ├── main.js        # The master script that runs the game loop 
+│   ├── variables.js     # Sites all the vairbales in the game
+│   ├── styles.css     # Contains the styling of the elements 
+│   ├── drawing.js     # Handles the screen display animations  
+│   ├── screen.js     # Handles the screen display animations 
+│   ├── snake.js        # The math behind the snake's movement 
+│   └── snaky.html      # The main file you open to start the game 
+\end{lstlisting}
+
+\section{Getting Started}
+1. \textbf{Install Requirements:} You'll need Python and the Flask library.
+\begin{lstlisting} 
+pip install Flask  
+\end{lstlisting}
+2. \textbf{Start the Server:} Run \texttt{python3 app.py} so the game can save your scores.
+3. \textbf{Launch the Game:} Just open \texttt{index.html} in your favorite browser .
+
+\section{Challenges We Faced}
+\begin{itemize}
+    \item \textbf{Merge conflicts: } When we merged the two branches, spent a lot of time on solving conflcits, we could have finalized the variables first then worked upon it. 
+    \item \textbf{The Speed Problem:} At first, the snake moved way too fast on high-end monitors. We fixed this by decoupling the game's logic from the screen's refresh rate .
+    \item \textbf{Accidental Suicides:} Sometimes pressing two keys quickly would make the snake turn 180 degrees and die instantly. We solved this by creating a "buffer" that only allows one valid turn per move .
+\end{itemize}
+
+\section{How to Play}
+When you open the game, you'll see an interface to  enter your username , then menu screen is visible where you can choose your mode or head to "Settings" to customize your experience . Use the \textbf{Arrow keys} or \textbf{WASD} to steer.  
+
+\section{Ten Hour Expansion Plan}
+If given 10 additional hours, we would focus on:
+\begin{itemize}
+    \item \textbf{Sound Effects} Sounds effect for events like hitting wall or eating apple.
+    \item \textbf{  More Food Items:} Implementing food like rotten apple that reduces health and chilli which would increase speed for variable time.
+    \item \textbf{  Obstacles Variety:} Implementing moving barriers and levels that increase in difficulty.
+    \item \textbf{Global Leaderboard:} Developing a public page to display top scores from \texttt{history.txt}.
+\end{itemize}
+\nocite{*}
+\printbibliography
+\end{document}
